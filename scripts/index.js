@@ -88,8 +88,9 @@ function send_fun()
 function append_history_message(timestamp, from, message)
 {
     var message_html = "";
-    var datetime = moment(timestamp, "YYYY-MM-DD HH:mm:ss");
-    var hhmm = datetime.format("HH:mm");
+    message = message == "" ? " " : message;
+    var mome = moment(parseInt(timestamp)*1000);
+    var hhmm = mome.utcOffset(8).format("HH:mm");
     if(from == show_name)
     {
         message_html =
