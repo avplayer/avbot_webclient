@@ -1,25 +1,37 @@
 var message_field;
+var send_button;
+var history_message;
+var ws_status;
 var telegram_ws;
+var show_name = "";
+var avbot_ws_address = "wss://www.hyb1.com/avbot/chat";
 
-window.onload = function ()
-{
-    var avbot_ws_address = "ws://127.0.0.1/avbot/chat";
-
+$(document).ready(function () {
     message_field = document.getElementById("message");
-    var ws_status = document.getElementById("ws_status");
+    send_button = document.getElementById("send_button");
+    ws_status = document.getElementById("ws_status");
 
-    telegram_ws = new ReconnectingWebSocket(avbot_ws_address, null, {reconnectInterval: 5000, timeoutInterval: 10000});
+    $("#message").keyup(function(event){
+        if(event.keyCode == 13){
+            send_fun();
+        }
+    });
+
+    telegram_ws = new ReconnectingWebSocket(avbot_ws_address, null, {reconnectInterval: 100, timeoutInterval: 10000});
 
     telegram_ws.onerror = function (error)
     {
-        console.log("WebSocket Error: " + error);
+        console.log("服务器WebSocket连接发生错误：" + error);
     };
 
     telegram_ws.onopen = function (event)
     {
         ws_status.innerHTML = "Telegram WebSocket connect success";
         ws_status.className = "alert alert-success";
-        push.className = "btn btn-small btn-success";
+        message_field.disabled = false;
+        send_button.className = "btn btn-small btn-success";
+        send_button.disabled = false;
+        console.log("与服务器建立了websocket连接");
     };
 
     telegram_ws.onmessage = function (event)
@@ -28,10 +40,9 @@ window.onload = function ()
         try{
             var obj = JSON.parse(message);
             if(obj["cmd"] == 1) {
-                var str = `[${obj["data"]["timestamp"]}]${obj["data"]["from"]}: ${obj["data"]["msg"]}`;
-                ws_status.innerHTML += str + "\n";
-                console.log("从服务器接收到数据：" + message);
+                append_history_message(obj["data"]["timestamp"], obj["data"]["from"], obj["data"]["msg"]);
             }
+            console.log("从服务器接收到数据：" + message);
         }
         catch(e)
         {
@@ -43,35 +54,83 @@ window.onload = function ()
     {
         ws_status.innerHTML = "Telegram WebSocket connect failed";
         ws_status.className = "alert alert-danger";
-        push.className = "btn btn-small btn-danger";
+        message_field.disabled = true;
+        send_button.className = "btn btn-small btn-danger";
+        send_button.disabled = true;
+        console.log("服务器断开了websocket连接");
     };
-};
 
-function push_fun()
+    $(window).resize(function() {
+        resize();
+    });
+    resize();
+
+});
+function resize()
 {
-    var message = message_field.value;
-
-    if (message == "")
+    var el = $('#history_message');
+    curHeight = el.height();
+    autoHeight = window.innerHeight - $('body').offset().top - $('#ws_status').height() - $('#bottom_div').height() - 32;
+    el.height(curHeight).animate({height: autoHeight}, 100);
+    $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 100);
+}
+function send_fun()
+{
+    var text_message = message_field.value;
+    if (text_message == "")
     {
         return;
     }
-
     var datetime = moment().utcOffset(8).format("YYYY-MM-DD HH:mm:ss");
-
-    send_to_telegram_ws(telegram_ws, message, datetime);
+    send_text(telegram_ws, text_message, datetime);
     message_field.value = "";
 };
-
-function send_to_telegram_ws(ws, message, datetime)
+function append_history_message(timestamp, from, message)
 {
+    var message_html = "";
+    var datetime = moment(timestamp, "YYYY-MM-DD HH:mm:ss");
+    var hhmm = datetime.format("HH:mm");
+    if(from == show_name)
+    {
+        message_html =
+        `<div class="rightd">
+            <span class="rightd_h">
+                ${from}[${hhmm}]
+            </span>
+            <div class="speech right" ng-class="speech left">
+                ${message}
+            </div>
+        </div>`;
+    }
+    else
+    {
+        message_html =
+        `<div class="leftd">
+            <span class="leftd_h">
+                [${hhmm}]${from}:
+            </span>
+            <div class="speech left" ng-class="speech left">
+                ${message}
+            </div>
+        </div>`;
+    }
+    $("#history_message").append(message_html);
+    $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 100);
+}
+
+function send_text(ws, message, datetime)
+{
+
     var obj =
     {
         "cmd" : 1, //type: text message
         "data" : {
             "timestamp" : datetime,
             "msg" : message,
-            "from" : "hyq"
+            "from" : $("#nickname").val()
         }
     }
-    ws.send(JSON.stringify(obj));
+    var send_str = JSON.stringify(obj);
+    ws.send(send_str);
+    console.log("向服务器发送数据：" + send_str);
 }

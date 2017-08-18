@@ -5,35 +5,32 @@
     <meta charset="utf-8"/>
     <meta name="renderer" content="webkit"/>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" integrity="sha384-zF4BRsG/fLiTGfR9QL82DrilZxrwgY/+du4p/c7J72zZj+FLYq4zY00RylP9ZjiT" crossorigin="anonymous">
-    <style>
-        #message_form {
-            margin-top: 1rem;
-        }
 
-        textarea {
-            width: 80%;
-            padding: 0.5rem;
-            font-size: 1rem;
-            border: 1px solid #D9D9D9;
-            border-radius: 3px;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
-            min-height: 400px;
-            margin-bottom: 1rem;
-        }
-        label {font-size: 18px;}
-    </style>
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" integrity="sha384-zF4BRsG/fLiTGfR9QL82DrilZxrwgY/+du4p/c7J72zZj+FLYq4zY00RylP9ZjiT" crossorigin="anonymous">
+    <link href="styles/chat.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="scripts/reconnecting-websocket.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="scripts/index.js"></script>
 </head>
 
 <body>
-    <div id="ws_status" class="alert alert-success" role="alert">Connecting...</div>
-    <textarea id="history_message" class="form-control" required readonly></textarea>
-    <div style="display:flex;display:-webkit-flex;">
-        <input id="message" class="form-control" placeholder="要发送的消息" required style="width:85%"/>
-        <button id="push" class="btn btn-small btn-success" onclick="push_fun()" style="width:15%">Send</button>
+    <div id="ws_status" class="alert alert-success" role="alert" style="margin-bottom:0px;">Connecting...</div>
+    <div id="history_message" class="container">
+        <div class="leftd">
+            <span class="leftd_h">
+                avbot:
+            </span>
+            <div class="speech left" ng-class="speech left">
+                二货，欢迎来到在线聊天室！
+            </div>
+        </div>
+    </div>
+
+    <div id="bottom_div" style="display:flex;display:-webkit-flex;">
+        <input id="nickname" class="form-control" style="width:10%" placeholder="Nickname" required/>
+        <input id="message" class="form-control" style="width:80%" placeholder="Write a message..." required/>
+        <button id="send_button" class="btn btn-small btn-success" style="width:10%" onclick="send_fun()">Send</button>
     </div>
 
 </body>
