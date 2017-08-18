@@ -1,25 +1,20 @@
 var message_field;
 var telegram_ws;
-var potato_ws;
 
 window.onload = function ()
 {
     var avbot_ws_address = "ws://127.0.0.1/avbot/chat";
 
-    // Get references to elements on the page.
     message_field = document.getElementById("message");
     var ws_status = document.getElementById("ws_status");
 
-    // Create a new WebSocket.
     telegram_ws = new ReconnectingWebSocket(avbot_ws_address, null, {reconnectInterval: 5000, timeoutInterval: 10000});
 
-    // Handle any errors that occur.
     telegram_ws.onerror = function (error)
     {
         console.log("WebSocket Error: " + error);
     };
 
-    // Show a connected message when the WebSocket is opened.
     telegram_ws.onopen = function (event)
     {
         ws_status.innerHTML = "Telegram WebSocket connect success";
@@ -27,7 +22,6 @@ window.onload = function ()
         push.className = "btn btn-small btn-success";
     };
 
-    // Handle messages sent by the server.
     telegram_ws.onmessage = function (event)
     {
         var message = event.data;
