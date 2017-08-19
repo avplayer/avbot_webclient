@@ -11,6 +11,9 @@ $(document).ready(function () {
     send_button = document.getElementById("send_button");
     ws_status = document.getElementById("ws_status");
 
+    show_name = "匿名" + Math.floor(Math.random() * 10000 % 10000);
+    $("#nickname").val(show_name);
+
     $("#message").keyup(function(event){
         if(event.keyCode == 13){
             send_fun();
@@ -40,7 +43,12 @@ $(document).ready(function () {
         try{
             var obj = JSON.parse(message);
             if(obj["cmd"] == 1) {
-                append_history_message(obj["data"]["timestamp"], obj["data"]["from"], obj["data"]["msg"]);
+                append_history_text_message(obj["data"]["timestamp"], obj["data"]["from"], obj["data"]["msg"]);
+            }
+            else if(obj["cmd"] == 2) {
+                append_history_image_message(obj["data"]["timestamp"], obj["data"]["from"],
+                    obj["data"]["img_type"], obj["data"]["img_data"],
+                    obj["data"]["caption"]);
             }
             console.log("从服务器接收到数据：" + message);
         }
@@ -86,10 +94,10 @@ function send_fun()
     send_text(telegram_ws, text_message, datetime);
     message_field.value = "";
 };
-function append_history_message(timestamp, from, message)
+function append_history_text_message(timestamp, from, message)
 {
     var message_html = "";
-    message = message == "" ? " " : message;
+    message = message == "" ? "&nbsp;" : message;
     var mome = moment(parseInt(timestamp)*1000);
     var hhmm = mome.utcOffset(8).format("HH:mm");
     if(from == show_name)
@@ -113,6 +121,33 @@ function append_history_message(timestamp, from, message)
             </span>
             <div class="speech left" ng-class="speech left">
                 ${message}
+            </div>
+        </div>`;
+    }
+    $("#history_message").append(message_html);
+    $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 100);
+}
+
+function append_history_image_message(timestamp, from, img_type, img_data, caption)
+{
+    var message_html = "";
+    message = message == "" ? "&nbsp;" : message;
+    var mome = moment(parseInt(timestamp)*1000);
+    var hhmm = mome.utcOffset(8).format("HH:mm");
+    caption = caption == "" ? "" : "<br/>" + caption;
+    if(from == show_name)
+    {
+        //todo: image message by my sended
+    }
+    else
+    {
+        message_html =
+        `<div class="leftd">
+            <span class="leftd_h">
+                [${hhmm}]${from}:
+            </span>
+            <div class="speech left" ng-class="speech left">
+                <img src="data:${img_type};base64, ${img_data}" alt="Red dot" />${caption}
             </div>
         </div>`;
     }
