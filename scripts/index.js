@@ -4,7 +4,7 @@ var history_message;
 var ws_status;
 var telegram_ws;
 var show_name = "";
-var avbot_ws_address = "wss://www.hyb1.com/avbot/chat";
+var avbot_ws_address = "wss://vps3.hyq.me:6002";
 
 $(document).ready(function () {
     message_field = document.getElementById("message");
@@ -89,7 +89,7 @@ function send_fun()
     {
         return;
     }
-    var datetime = moment().utcOffset(8).format("YYYY-MM-DD HH:mm:ss");
+    var datetime = String(moment().unix());
     show_name = $("#nickname").val();
     send_text(telegram_ws, text_message, datetime);
     message_field.value = "";
@@ -132,12 +132,12 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
 {
     var message_html = "";
     message = message == "" ? "&nbsp;" : message;
-    var mome = moment(parseInt(timestamp)*1000);
+    var mome = moment.unix(parseInt(timestamp));
     var hhmm = mome.utcOffset(8).format("HH:mm");
     caption = caption == "" ? "" : "<br/>" + caption;
     if(from == show_name)
     {
-        //todo: image message by my sended
+        //todo: image message if sended by me
     }
     else
     {
