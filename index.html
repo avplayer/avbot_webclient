@@ -5,11 +5,13 @@
     <meta charset="utf-8"/>
     <meta name="renderer" content="webkit"/>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3mobile.css">
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" integrity="sha384-zF4BRsG/fLiTGfR9QL82DrilZxrwgY/+du4p/c7J72zZj+FLYq4zY00RylP9ZjiT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
     <link href="styles/chat.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-    <script src="scripts/reconnecting-websocket.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="scripts/index.js"></script>
 </head>
@@ -28,9 +30,9 @@
     </div>
 
     <div id="bottom_div" style="display:flex;display:-webkit-flex;">
-        <input id="nickname" class="form-control" style="width:10%" placeholder="Nickname" required/>
+        <input id="nickname" class="form-control" style="width:10%;min-width:90px;" placeholder="Nickname" required/>
         <input id="message" class="form-control" style="width:80%" placeholder="Write a message..." required/>
-        <button id="send_button" class="btn btn-small btn-success" style="width:10%" onclick="send_fun()">Send</button>
+        <button id="send_button" class="btn btn-small btn-success" style="width:10%;min-width:70px;" onclick="send_fun()">Send</button>
     </div>
 
 </body>
