@@ -4,7 +4,7 @@ var history_message;
 var ws_status;
 var telegram_ws;
 var show_name = "";
-var avbot_ws_address = "wss://vps3.hyq.me:6002";
+var avbot_ws_address = "wss://www.hyb1.com/avbot/chat";
 
 $(document).ready(function () {
     message_field = document.getElementById("message");
