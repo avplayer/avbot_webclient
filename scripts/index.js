@@ -74,6 +74,56 @@ $(document).ready(function () {
     resize();
 
 });
+function open_picture_dialog()
+{
+    BootstrapDialog.show({
+        title: 'Send a picture',
+        type: BootstrapDialog.TYPE_SUCCESS,
+        message: `Please choose a file.
+        <input id="file_input" type="file" onchange="preview_file()"/>
+        <input id="file_base64" type="hidden"/>
+        <img id="preview_img" style="max-width:90%;max-height:300px;"/><br/>
+        <input id="caption_input" class="form-control" style="width:100%;display:none;" title="Picture caption" placeholder="Picture Caption(Optional)" required/>`,
+        buttons: [{
+            label: 'Cancel',
+            action: function(dialog){
+                dialog.close();
+            }
+        },{
+            label: 'Send',
+            cssClass: 'btn-success',
+            action: function(dialog) {
+                var file_base64_str = $("#file_base64").val();
+                var caption_input_str = $("#caption_input").val();
+                if(file_base64_str==""){
+                    return;
+                }
+                var datetime = String(moment().unix());
+                send_image(telegram_ws, "image/png", file_base64_str, caption_input_str, datetime);
+                dialog.close();
+            }
+        }]
+    });
+}
+function preview_file()
+{
+    var preview = document.querySelector('#preview_img');
+    var file = document.querySelector('#file_input').files[0];
+    $("#file_base64").val("");
+    var reader_preview  = new FileReader();
+    var reader  = new FileReader();
+
+    reader.addEventListener("load", function () {
+        preview.src = reader_preview.result;
+        $("#file_base64").val(btoa(reader.result));
+    }, false);
+
+    if (file) {
+        reader_preview.readAsDataURL(file);
+        reader.readAsBinaryString(file);
+    }
+    $('#caption_input').show();
+}
 function resize()
 {
     var el = $('#history_message');
@@ -137,7 +187,15 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
     caption = caption == "" ? "" : "<br/>" + caption;
     if(from == show_name)
     {
-        //todo: image message if sended by me
+        message_html =
+        `<div class="rightd">
+            <span class="rightd_h">
+                ${from}[${hhmm}]
+            </span>
+            <div class="speech right" ng-class="speech left">
+                <img src="data:${img_type};base64, ${img_data}" style="max-height:350px;"/>${caption}
+            </div>
+        </div>`;
     }
     else
     {
@@ -147,7 +205,7 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
                 [${hhmm}]${from}:
             </span>
             <div class="speech left" ng-class="speech left">
-                <img src="data:${img_type};base64, ${img_data}" alt="Red dot" />${caption}
+                <img src="data:${img_type};base64, ${img_data}" style="max-height:350px;"/>${caption}
             </div>
         </div>`;
     }
@@ -168,5 +226,23 @@ function send_text(ws, message, datetime)
     }
     var send_str = JSON.stringify(obj);
     ws.send(send_str);
-    console.log("向服务器发送数据：" + send_str);
+    console.log("向服务器发送文字消息，数据：" + send_str);
+}
+
+function send_image(ws, img_type, img_data, caption, datetime)
+{
+    var obj =
+    {
+        "cmd" : 2, //type: image message
+        "data" : {
+            "timestamp" : datetime,
+            "img_type" : img_type,
+            "img_data" : img_data,
+            "caption" : caption,
+            "from" : $("#nickname").val()
+        }
+    }
+    var send_str = JSON.stringify(obj);
+    ws.send(send_str);
+    console.log("向服务器发送图片消息，数据：" + send_str);
 }

@@ -7,7 +7,7 @@ Avbot Chat WebClient用来桥接网页和Telegram，让av社区的友人不用�
 * 全程HTTPS TLS1.2加密
 
 ## 通讯协议
-### bot通过websocket向web推送text消息
+### bot向web推送text消息
 ```js
 {
     "cmd" : 1,
@@ -18,7 +18,7 @@ Avbot Chat WebClient用来桥接网页和Telegram，让av社区的友人不用�
     }
 }
 ```
-### bot通过websocket向web推送image消息
+### bot向web推送image消息
 ```js
 {
     "cmd" : 2,
@@ -34,13 +34,27 @@ Avbot Chat WebClient用来桥接网页和Telegram，让av社区的友人不用�
 * img_type可为：image/png、image/jpeg等
 * img_data为：base64 string from image file
 
-### web通过websocket向bot发送text消息
+### web向bot发送text消息
 ```js
 {
     "cmd" : 1,
     "data" : {
         "timestamp" : "1503132689",
         "msg" : "this is a message text",
+        "from" : "nickname"
+    }
+}
+```
+
+### web向bot发送image消息
+```js
+{
+    "cmd" : 2,
+    "data" : {
+        "timestamp" : "392873947",
+        "img_type" : "image/png",
+        "img_data" : "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",
+        "caption" : "this is a message text near the picture",
         "from" : "nickname"
     }
 }
