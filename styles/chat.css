@@ -71,7 +71,7 @@ div.speech.right:after {
  left: auto;
  right: -8px;
  border-width: 8px 0 8px 9px;
- border-color: transparent #bced50;
+ border-color: transparent #aed943;
 }
 div .left {
  display: inline-block;
@@ -101,7 +101,7 @@ div .left:after {
  bottom: auto;
  left: -8px;
  border-width: 8px 9px 8px 0;
- border-color: transparent #eae8e8;
+ border-color: transparent #E3E3E3;
 }
 .leftimg {
  float: left;

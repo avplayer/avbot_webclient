@@ -82,6 +82,7 @@ function send_fun()
         return;
     }
     var datetime = moment().utcOffset(8).format("YYYY-MM-DD HH:mm:ss");
+    show_name = $("#nickname").val();
     send_text(telegram_ws, text_message, datetime);
     message_field.value = "";
 };
@@ -121,7 +122,6 @@ function append_history_message(timestamp, from, message)
 
 function send_text(ws, message, datetime)
 {
-
     var obj =
     {
         "cmd" : 1, //type: text message
