@@ -1,6 +1,6 @@
 .container
 {
-    font-family: "Courier New";
+    font-family: "微软雅黑";
     width: 100%;
     height: 450px;
     overflow: auto;
@@ -126,6 +126,8 @@ div .left .timestamp {
   color: green;
 }
 div .left .nickname {
+  position:absolute;
+  top:5px;
   color: brown;
 }
 .rightd {
@@ -141,6 +143,8 @@ div .right .timestamp {
   color: green;
 }
 div .right .nickname {
+  position:absolute;
+  top:5px;
   color: brown;
 }
 .leftd_h{

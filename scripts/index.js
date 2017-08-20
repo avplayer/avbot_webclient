@@ -1,7 +1,7 @@
 var message_field;
 var send_button;
 var history_message;
-var ws_status;
+var top_div;
 var telegram_ws;
 var show_name = "";
 var avbot_ws_address = "wss://vps3.hyq.me:6002";
@@ -10,10 +10,10 @@ var avbot_face_address = "https://vps3.hyq.me:6002/avbot/face/";
 $(document).ready(function () {
     message_field = document.getElementById("message");
     send_button = document.getElementById("send_button");
-    ws_status = document.getElementById("ws_status");
+    top_div = document.getElementById("top_div");
 
     show_name = "匿名" + Math.floor(Math.random() * 10000 % 10000);
-    $("#nickname").val(show_name);
+    $("#nickname_edit_button").html(show_name);
 
     $("#message").keyup(function(event){
         if(event.keyCode == 13){
@@ -30,8 +30,8 @@ $(document).ready(function () {
 
     telegram_ws.onopen = function (event)
     {
-        ws_status.innerHTML = "Telegram WebSocket connect success";
-        ws_status.className = "alert alert-success";
+        $("#status_msg").html("Telegram WebSocket connect success");
+        top_div.className = "alert alert-success";
         message_field.disabled = false;
         send_button.className = "btn btn-small btn-success";
         send_button.disabled = false;
@@ -66,8 +66,8 @@ $(document).ready(function () {
 
     telegram_ws.onclose = function (event)
     {
-        ws_status.innerHTML = "Telegram WebSocket connect failed";
-        ws_status.className = "alert alert-danger";
+        $("#status_msg").html("Telegram WebSocket connect failed");
+        top_div.className = "alert alert-danger";
         message_field.disabled = true;
         send_button.className = "btn btn-small btn-danger";
         send_button.disabled = true;
@@ -134,9 +134,35 @@ function resize()
 {
     var el = $('#history_message');
     curHeight = el.height();
-    autoHeight = window.innerHeight - $('body').offset().top - $('#ws_status').height() - $('#bottom_div').height() - 32;
+    autoHeight = window.innerHeight - $('body').offset().top - $('#top_div').height() - $('#bottom_div').height() - 20;
     el.height(curHeight).animate({height: autoHeight}, 5);
     $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 5);
+}
+function edit_nickname(show_name)
+{
+    BootstrapDialog.show({
+        title: 'Change my nickname',
+        type: BootstrapDialog.TYPE_SUCCESS,
+        message: `Please input your Nickname: <input id="nickname" class="form-control" style="width:90%;" title="Set Nickname" placeholder="Nickname" value="${show_name}" required/>`,
+        buttons: [{
+            label: 'Cancel',
+            action: function(dialog){
+                dialog.close();
+            }
+        },{
+            label: 'Save',
+            cssClass: 'btn-success',
+            action: function(dialog) {
+                var new_name_str = $("#nickname").val();
+                if(new_name_str==""){
+                    return;
+                }
+                show_name = new_name_str;
+                $("#nickname_edit_button").html(show_name);
+                dialog.close();
+            }
+        }]
+    });
 }
 function send_fun()
 {
@@ -146,7 +172,6 @@ function send_fun()
         return;
     }
     var datetime = String(moment().unix());
-    show_name = $("#nickname").val();
     send_text(telegram_ws, text_message, datetime);
     message_field.value = "";
 };
@@ -295,7 +320,7 @@ function send_text(ws, message, datetime)
         "data" : {
             "timestamp" : datetime,
             "msg" : message,
-            "from" : $("#nickname").val()
+            "from" : show_name
         }
     }
     var send_str = JSON.stringify(obj);
@@ -313,7 +338,7 @@ function send_image(ws, img_type, img_data, caption, datetime)
             "img_type" : img_type,
             "img_data" : img_data,
             "caption" : caption,
-            "from" : $("#nickname").val()
+            "from" : show_name
         }
     }
     var send_str = JSON.stringify(obj);
