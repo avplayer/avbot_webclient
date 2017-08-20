@@ -130,8 +130,8 @@ function resize()
     var el = $('#history_message');
     curHeight = el.height();
     autoHeight = window.innerHeight - $('body').offset().top - $('#ws_status').height() - $('#bottom_div').height() - 32;
-    el.height(curHeight).animate({height: autoHeight}, 100);
-    $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 100);
+    el.height(curHeight).animate({height: autoHeight}, 5);
+    $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 5);
 }
 function send_fun()
 {
@@ -151,7 +151,13 @@ function append_history_text_message(timestamp, from, message, user)
     message = message == "" ? "&nbsp;" : message;
     var mome = moment(parseInt(timestamp)*1000);
     var hhmm = mome.utcOffset(8).format("HH:mm");
-    var img_url = avbot_face_address + user["id"];
+    var img_url = "";
+    if(user != null){
+        img_url = avbot_face_address + user["id"];
+    }
+    else {
+        img_url = "res/avbot.jpg";
+    }
     if(from == show_name)
     {
         message_html =
@@ -161,7 +167,7 @@ function append_history_text_message(timestamp, from, message, user)
             </span>
             <div class="speech right">
                 ${message}
-                &nbsp;<span class="timestamp">${hhmm}</span>
+                &nbsp;&nbsp;<span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
     }
@@ -173,8 +179,9 @@ function append_history_text_message(timestamp, from, message, user)
                 <img src="${img_url}" title="${from}"/>
             </span>
             <div class="speech left">
+                <span class="nickname">${from}</span><br/>
                 ${message}
-                &nbsp;<span class="timestamp">${hhmm}</span>
+                &nbsp;&nbsp;<span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
     }
@@ -188,7 +195,13 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
     message = message == "" ? "&nbsp;" : message;
     var mome = moment(parseInt(timestamp)*1000);
     var hhmm = mome.utcOffset(8).format("HH:mm");
-    var img_url = avbot_face_address + user["id"];
+    var img_url = "";
+    if(user != null){
+        img_url = avbot_face_address + user["id"];
+    }
+    else {
+        img_url = "res/avbot.jpg";
+    }
     caption = caption == "" ? "" : "<br/>" + caption;
     if(from == show_name)
     {
@@ -198,6 +211,7 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
                 <img src="${img_url}" title="${from}"/>
             </span>
             <div class="speech right">
+                <span class="nickname">${from}</span><br/>
                 <img src="data:${img_type};base64, ${img_data}" style="max-height:350px;max-width:350px;"/>${caption}
                 &nbsp;<span class="timestamp">${hhmm}</span>
             </div>
@@ -211,6 +225,7 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
                 <img src="${img_url}" title="${from}"/>
             </span>
             <div class="speech left">
+                <span class="nickname">${from}</span><br/>
                 <img src="data:${img_type};base64, ${img_data}" style="max-height:350px;max-width:350px;"/>${caption}
                 &nbsp;<span class="timestamp">${hhmm}</span>
             </div>
