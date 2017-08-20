@@ -22,6 +22,7 @@ Avbot Chat WebClient用来桥接网页和Telegram，让av社区的友人不用�
     }
 }
 ```
+
 ### bot向web推送image消息
 ```js
 {
@@ -41,6 +42,26 @@ Avbot Chat WebClient用来桥接网页和Telegram，让av社区的友人不用�
 ```
 * img_type可为：image/png、image/jpeg等
 * img_data为：base64 string from image file
+
+
+### bot向web推送audio/video消息
+```js
+{
+    "cmd" : 2,
+    "data" : {
+        "timestamp" : "392873947",
+        "video_type" : "video/mp4",
+        "video_data" : "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",
+        "from" : "nickname",
+        "user" : {
+            "id" : 162385454,
+            "name" : "username"
+        }
+    }
+}
+```
+* video_type可为：video/mp4、audio/mpeg3等
+* video_data为：base64 string from audio/video file
 
 ### web向bot发送text消息
 ```js

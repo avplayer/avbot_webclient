@@ -51,6 +51,11 @@ $(document).ready(function () {
                     obj["data"]["img_type"], obj["data"]["img_data"],
                     obj["data"]["caption"], obj["data"]["user"]);
             }
+            else if(obj["cmd"] == 3) {
+                append_history_video_message(obj["data"]["timestamp"], obj["data"]["from"],
+                obj["data"]["video_type"], obj["data"]["video_data"],
+                obj["data"]["user"]);
+            }
             console.log("从服务器接收到数据：" + message);
         }
         catch(e)
@@ -167,7 +172,7 @@ function append_history_text_message(timestamp, from, message, user)
             </span>
             <div class="speech right">
                 ${message}
-                &nbsp;&nbsp;<span class="timestamp">${hhmm}</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
     }
@@ -181,7 +186,7 @@ function append_history_text_message(timestamp, from, message, user)
             <div class="speech left">
                 <span class="nickname">${from}</span><br/>
                 ${message}
-                &nbsp;&nbsp;<span class="timestamp">${hhmm}</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
     }
@@ -212,8 +217,9 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
             </span>
             <div class="speech right">
                 <span class="nickname">${from}</span><br/>
-                <img src="data:${img_type};base64, ${img_data}" style="max-height:350px;max-width:350px;"/>${caption}
-                &nbsp;<span class="timestamp">${hhmm}</span>
+                <img src="data:${img_type};base64, ${img_data}" style="max-height:350px;max-width:350px;"/>
+                <br/>${caption}
+                <br/><span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
     }
@@ -226,8 +232,54 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
             </span>
             <div class="speech left">
                 <span class="nickname">${from}</span><br/>
-                <img src="data:${img_type};base64, ${img_data}" style="max-height:350px;max-width:350px;"/>${caption}
-                &nbsp;<span class="timestamp">${hhmm}</span>
+                <img src="data:${img_type};base64, ${img_data}" style="max-height:350px;max-width:350px;"/>
+                <br/>${caption}
+                <br/><span class="timestamp">${hhmm}</span>
+            </div>
+        </div>`;
+    }
+    $("#history_message").append(message_html);
+    $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 100);
+}
+
+function append_history_video_message(timestamp, from, video_type, video_data, user)
+{
+    var message_html = "";
+    message = message == "" ? "&nbsp;" : message;
+    var mome = moment(parseInt(timestamp)*1000);
+    var hhmm = mome.utcOffset(8).format("HH:mm");
+    var img_url = "";
+    if(user != null){
+        img_url = avbot_face_address + user["id"];
+    }
+    else {
+        img_url = "res/avbot.jpg";
+    }
+    if(from == show_name)
+    {
+        message_html =
+        `<div class="rightd">
+            <span class="rightd_h">
+                <img src="${img_url}" title="${from}"/>
+            </span>
+            <div class="speech right">
+                <span class="nickname">${from}</span><br/>
+                <video src="data:${video_type};base64, ${video_data}" style="max-height:400px;max-width:400px;" autoplay="1" controls="controls" loop="loop"/>
+                <br/><span class="timestamp">${hhmm}</span>
+            </div>
+        </div>`;
+    }
+    else
+    {
+        message_html =
+        `<div class="leftd">
+            <span class="leftd_h">
+                <img src="${img_url}" title="${from}"/>
+            </span>
+            <div class="speech left">
+                <span class="nickname">${from}</span><br/>
+                <video src="data:${video_type};base64, ${video_data}" style="max-height:400px;max-width:400px;" autoplay="1" controls="controls" loop="loop"/>
+                <br/><span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
     }
