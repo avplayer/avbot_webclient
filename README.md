@@ -14,7 +14,11 @@ Avbot Chat WebClient用来桥接网页和Telegram，让av社区的友人不用�
     "data" : {
         "timestamp" : "1503132689",
         "msg" : "this is a message text",
-        "from" : "nickname"
+        "from" : "nickname",
+        "user" : {
+            "id" : 162385454,
+            "name" : "username"
+        }
     }
 }
 ```
@@ -27,7 +31,11 @@ Avbot Chat WebClient用来桥接网页和Telegram，让av社区的友人不用�
         "img_type" : "image/png",
         "img_data" : "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",
         "caption" : "this is a message text near the picture",
-        "from" : "nickname"
+        "from" : "nickname",
+        "user" : {
+            "id" : 162385454,
+            "name" : "username"
+        }
     }
 }
 ```

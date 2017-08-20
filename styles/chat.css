@@ -9,6 +9,8 @@
     border:none;
     border-bottom:1px solid #fff;
     border:1px solid #ccc;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 div.speech {
     float: left;
@@ -116,15 +118,28 @@ div .left:after {
  /*float: left;*/
  margin-left: 10px;
 }
+div .left .timestamp {
+  position:absolute;
+  right:0;
+  bottom:0;
+  font-size: 10px;
+  color: gray;
+}
 .rightd {
  clear: both;
  /*float: right;*/
  margin-right: 10px;
 }
-
+div .right .timestamp {
+  position:absolute;
+  left:0;
+  bottom:0;
+  font-size: 10px;
+  color: gray;
+}
 .leftd_h{
  position: relative;
- top: 25px;
+ top: 15px;
  /*border-radius: 100%;*/
  display: block;
  float: left;
@@ -132,14 +147,27 @@ div .left:after {
  text-align: center;
  font-size: 12px;
 }
-
+.leftd_h img{
+ display: block;
+ width: auto;
+ height: 32px;
+ border-radius: 100%;
+ margin-bottom: 0px;
+}
 .rightd_h{
  position: relative;
- top: 25px;
+ top: 15px;
  /*border-radius: 100%;*/
  display: block;
  float: right;
  overflow: hidden;
  text-align: center;
  font-size: 12px;
+}
+.rightd_h img{
+ display: block;
+ width: auto;
+ height: 32px;
+ border-radius: 100%;
+ margin-bottom: 0px;
 }

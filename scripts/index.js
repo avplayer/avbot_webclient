@@ -5,6 +5,7 @@ var ws_status;
 var telegram_ws;
 var show_name = "";
 var avbot_ws_address = "wss://vps3.hyq.me:6002";
+var avbot_face_address = "https://vps3.hyq.me:6002/avbot/face/";
 
 $(document).ready(function () {
     message_field = document.getElementById("message");
@@ -43,12 +44,12 @@ $(document).ready(function () {
         try{
             var obj = JSON.parse(message);
             if(obj["cmd"] == 1) {
-                append_history_text_message(obj["data"]["timestamp"], obj["data"]["from"], obj["data"]["msg"]);
+                append_history_text_message(obj["data"]["timestamp"], obj["data"]["from"], obj["data"]["msg"],  obj["data"]["user"]);
             }
             else if(obj["cmd"] == 2) {
                 append_history_image_message(obj["data"]["timestamp"], obj["data"]["from"],
                     obj["data"]["img_type"], obj["data"]["img_data"],
-                    obj["data"]["caption"]);
+                    obj["data"]["caption"], obj["data"]["user"]);
             }
             console.log("从服务器接收到数据：" + message);
         }
@@ -144,21 +145,23 @@ function send_fun()
     send_text(telegram_ws, text_message, datetime);
     message_field.value = "";
 };
-function append_history_text_message(timestamp, from, message)
+function append_history_text_message(timestamp, from, message, user)
 {
     var message_html = "";
     message = message == "" ? "&nbsp;" : message;
     var mome = moment(parseInt(timestamp)*1000);
     var hhmm = mome.utcOffset(8).format("HH:mm");
+    var img_url = avbot_face_address + user["id"];
     if(from == show_name)
     {
         message_html =
         `<div class="rightd">
             <span class="rightd_h">
-                ${from}[${hhmm}]
+                <img src="${img_url}" title="${from}"/>
             </span>
-            <div class="speech right" ng-class="speech left">
+            <div class="speech right">
                 ${message}
+                &nbsp;<span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
     }
@@ -167,10 +170,11 @@ function append_history_text_message(timestamp, from, message)
         message_html =
         `<div class="leftd">
             <span class="leftd_h">
-                [${hhmm}]${from}:
+                <img src="${img_url}" title="${from}"/>
             </span>
-            <div class="speech left" ng-class="speech left">
+            <div class="speech left">
                 ${message}
+                &nbsp;<span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
     }
@@ -178,22 +182,24 @@ function append_history_text_message(timestamp, from, message)
     $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 100);
 }
 
-function append_history_image_message(timestamp, from, img_type, img_data, caption)
+function append_history_image_message(timestamp, from, img_type, img_data, caption, user)
 {
     var message_html = "";
     message = message == "" ? "&nbsp;" : message;
-    var mome = moment.unix(parseInt(timestamp));
+    var mome = moment(parseInt(timestamp)*1000);
     var hhmm = mome.utcOffset(8).format("HH:mm");
+    var img_url = avbot_face_address + user["id"];
     caption = caption == "" ? "" : "<br/>" + caption;
     if(from == show_name)
     {
         message_html =
         `<div class="rightd">
             <span class="rightd_h">
-                ${from}[${hhmm}]
+                <img src="${img_url}" title="${from}"/>
             </span>
-            <div class="speech right" ng-class="speech left">
-                <img src="data:${img_type};base64, ${img_data}" style="max-height:350px;"/>${caption}
+            <div class="speech right">
+                <img src="data:${img_type};base64, ${img_data}" style="max-height:350px;max-width:350px;"/>${caption}
+                &nbsp;<span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
     }
@@ -202,10 +208,11 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
         message_html =
         `<div class="leftd">
             <span class="leftd_h">
-                [${hhmm}]${from}:
+                <img src="${img_url}" title="${from}"/>
             </span>
-            <div class="speech left" ng-class="speech left">
-                <img src="data:${img_type};base64, ${img_data}" style="max-height:350px;"/>${caption}
+            <div class="speech left">
+                <img src="data:${img_type};base64, ${img_data}" style="max-height:350px;max-width:350px;"/>${caption}
+                &nbsp;<span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
     }
