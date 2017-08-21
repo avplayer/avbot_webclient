@@ -30,7 +30,7 @@ $(document).ready(function () {
 
     telegram_ws.onopen = function (event)
     {
-        $("#status_msg").html("Telegram WebSocket connect success");
+        $("#status_msg").html("WebSocket connected");
         top_div.className = "alert alert-success";
         message_field.disabled = false;
         send_button.className = "btn btn-small btn-success";
@@ -66,7 +66,7 @@ $(document).ready(function () {
 
     telegram_ws.onclose = function (event)
     {
-        $("#status_msg").html("Telegram WebSocket connect failed");
+        $("#status_msg").html("WebSocket connect failed");
         top_div.className = "alert alert-danger";
         message_field.disabled = true;
         send_button.className = "btn btn-small btn-danger";
