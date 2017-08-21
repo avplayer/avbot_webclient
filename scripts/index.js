@@ -138,7 +138,7 @@ function resize()
     el.height(curHeight).animate({height: autoHeight}, 5);
     $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 5);
 }
-function edit_nickname(show_name)
+function edit_nickname()
 {
     BootstrapDialog.show({
         title: 'Change my nickname',
