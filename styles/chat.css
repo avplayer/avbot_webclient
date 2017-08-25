@@ -126,7 +126,7 @@ div .left .timestamp {
   color: green;
 }
 div .left .nickname {
-  position:absolute;
+  /*position:absolute;*/
   top:5px;
   color: brown;
 }
@@ -143,7 +143,7 @@ div .right .timestamp {
   color: green;
 }
 div .right .nickname {
-  position:absolute;
+  /*position:absolute;*/
   top:5px;
   color: brown;
 }

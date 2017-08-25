@@ -12,6 +12,17 @@ $(document).ready(function () {
     send_button = document.getElementById("send_button");
     top_div = document.getElementById("top_div");
 
+    try{
+        window.emojiPicker = new EmojiPicker.EmojiPicker({
+            emojiable_selector: '[data-emojiable=true]',
+            assetsPath: 'emoji/img/'
+        });
+        window.emojiPicker.discover();
+    }catch(exception){
+        console.error(exception.message);
+    }
+
+
     show_name = "匿名" + Math.floor(Math.random() * 10000 % 10000);
     $("#nickname_edit_button").html(show_name);
 
@@ -174,6 +185,7 @@ function send_fun()
     var datetime = String(moment().unix());
     send_text(telegram_ws, text_message, datetime);
     message_field.value = "";
+    $(".emoji-wysiwyg-editor").html("");
 };
 function append_history_text_message(timestamp, from, message, user)
 {
@@ -216,7 +228,7 @@ function append_history_text_message(timestamp, from, message, user)
         </div>`;
     }
     $("#history_message").append(message_html);
-    $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 100);
+    $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 5);
 }
 
 function append_history_image_message(timestamp, from, img_type, img_data, caption, user)
@@ -264,7 +276,7 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
         </div>`;
     }
     $("#history_message").append(message_html);
-    $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 100);
+    $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 5);
 }
 
 function append_history_video_message(timestamp, from, video_type, video_data, user)
@@ -309,7 +321,7 @@ function append_history_video_message(timestamp, from, video_type, video_data, u
         </div>`;
     }
     $("#history_message").append(message_html);
-    $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 100);
+    $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 5);
 }
 
 function send_text(ws, message, datetime)
