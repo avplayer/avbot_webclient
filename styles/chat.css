@@ -23,6 +23,10 @@ div.speech {
     border: 1px solid #989898;
     border-radius: 8px;
 }
+div.speech img {
+  max-height: 350px;
+  max-width: 350px;
+}
 div.speech:before {
     content: '';
     position: absolute;

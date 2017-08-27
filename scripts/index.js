@@ -285,8 +285,8 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
             </span>
             <div class="speech right">
                 <span class="nickname">${from}</span><br/>
-                <img src="data:${img_type};base64, ${img_data}" style="max-height:350px;max-width:350px;"/>
-                <br/>${caption}
+                <img src="data:${img_type};base64, ${img_data}"/>
+                <br/><br/>${caption}
                 <br/><span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
@@ -300,8 +300,8 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
             </span>
             <div class="speech left">
                 <span class="nickname">${from}</span><br/>
-                <img src="data:${img_type};base64, ${img_data}" style="max-height:350px;max-width:350px;"/>
-                <br/>${caption}
+                <img src="data:${img_type};base64, ${img_data}"/>
+                <br/><br/>${caption}
                 <br/><span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
@@ -331,7 +331,7 @@ function append_history_video_message(timestamp, from, video_type, video_data, u
             </span>
             <div class="speech right">
                 <span class="nickname">${from}</span><br/>
-                <video src="data:${video_type};base64, ${video_data}" style="max-height:350px;max-width:350px;" autoplay="1" controls="controls" loop="loop"/>
+                <video src="data:${video_type};base64, ${video_data}" autoplay="1" controls="controls" loop="loop"/>
                 <br/><span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
@@ -345,7 +345,7 @@ function append_history_video_message(timestamp, from, video_type, video_data, u
             </span>
             <div class="speech left">
                 <span class="nickname">${from}</span><br/>
-                <video src="data:${video_type};base64, ${video_data}" style="max-height:350px;max-width:350px;" autoplay="1" controls="controls" loop="loop"/>
+                <video src="data:${video_type};base64, ${video_data}" autoplay="1" controls="controls" loop="loop"/>
                 <br/><span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
