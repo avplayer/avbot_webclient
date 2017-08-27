@@ -188,6 +188,10 @@ function send_fun()
     message_field.value = "";
     $(".emoji-wysiwyg-editor").html("");
 }
+function html_encode(value)
+{
+    return $('<div/>').text(value).html();
+}
 
 function insert_html_msg(msgid, message_html)
 {
@@ -218,6 +222,7 @@ function append_history_text_message(timestamp, from, message, user)
 {
     var message_html = "";
     message = message == "" ? "&nbsp;" : message;
+    message = html_encode(message);
     var mome = moment(parseInt(timestamp)*1000);
     var hhmm = mome.utcOffset(8).format("HH:mm");
     var img_url = "";
@@ -235,7 +240,7 @@ function append_history_text_message(timestamp, from, message, user)
                 <img src="${img_url}" title="${from}"/>
             </span>
             <div class="speech right">
-                <pre>${message}</pre>
+                ${message}
                 &nbsp;&nbsp;&nbsp;&nbsp;<span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
@@ -249,7 +254,7 @@ function append_history_text_message(timestamp, from, message, user)
             </span>
             <div class="speech left">
                 <span class="nickname">${from}</span><br/>
-                <pre>${message}</pre>
+                ${message}
                 &nbsp;&nbsp;&nbsp;&nbsp;<span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
@@ -271,6 +276,7 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
         img_url = "res/avbot.jpg";
     }
     caption = caption == "" ? "" : "<br/>" + caption;
+    caption = html_encode(caption);
     if(from == show_name)
     {
         message_html =
