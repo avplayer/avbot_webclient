@@ -235,7 +235,7 @@ function append_history_text_message(timestamp, from, message, user)
                 <img src="${img_url}" title="${from}"/>
             </span>
             <div class="speech right">
-                ${message}
+                <pre>${message}</pre>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
@@ -249,7 +249,7 @@ function append_history_text_message(timestamp, from, message, user)
             </span>
             <div class="speech left">
                 <span class="nickname">${from}</span><br/>
-                ${message}
+                <pre>${message}</pre>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
