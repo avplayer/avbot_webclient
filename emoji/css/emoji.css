@@ -103,12 +103,14 @@ img.emoji {
   z-index: 999;
   right: 0;
   bottom: 0;
+  margin-bottom: 36px;
+  margin-right: 10px;
   overflow: hidden;
   width: 290px;
   border: 1px #dfdfdf solid;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }
@@ -190,7 +192,8 @@ img.emoji {
 
 .emoji-menu .emoji-items-wrap {
   position: relative;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
   height: 240px; }
 
 .emoji-menu .emoji-items {

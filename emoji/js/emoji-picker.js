@@ -2779,7 +2779,7 @@ var keyPrefix = '';
 var noPrefix = false;
 var cache = {};
 var useCs = !!(window.chrome && chrome.storage && chrome.storage.local);
-var useLs = !useCs && !!window.localStorage;
+var useLs = !useCs && document.localStorage;
 
 function storageSetPrefix(newPrefix) {
     keyPrefix = newPrefix;
