@@ -78,7 +78,7 @@ img.emoji {
 
 .emoji-wysiwyg-editor {
   line-height: 23px;
-  overflow: auto;
+  overflow: hidden;
   margin-bottom: 0;
   padding: 6px;
   padding-right: 35px;
