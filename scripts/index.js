@@ -237,7 +237,7 @@ function append_history_text_message(timestamp, from, message, user)
         message_html =
         `<div class="rightd" id="msg_${timestamp}">
             <span class="rightd_h">
-                <img src="${img_url}" title="${from}"/>
+                <img src="${img_url}" title="${from}" onerror="this.src='res/default.png'"/>
             </span>
             <div class="speech right">
                 ${message}
@@ -250,7 +250,7 @@ function append_history_text_message(timestamp, from, message, user)
         message_html =
         `<div class="leftd" id="msg_${timestamp}">
             <span class="leftd_h">
-                <img src="${img_url}" title="${from}"/>
+                <img src="${img_url}" title="${from}" onerror="this.src='res/default.png'"/>
             </span>
             <div class="speech left">
                 <span class="nickname">${from}</span><br/>
@@ -275,14 +275,13 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
     else {
         img_url = "res/avbot.jpg";
     }
-    caption = caption == "" ? "" : "<br/>" + caption;
     caption = html_encode(caption);
     if(from == show_name)
     {
         message_html =
         `<div class="rightd" id="msg_${timestamp}">
             <span class="rightd_h">
-                <img src="${img_url}" title="${from}"/>
+                <img src="${img_url}" title="${from}" onerror="this.src='res/default.png'"/>
             </span>
             <div class="speech right">
                 <span class="nickname">${from}</span><br/>
@@ -297,7 +296,7 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
         message_html =
         `<div class="leftd" id="msg_${timestamp}">
             <span class="leftd_h">
-                <img src="${img_url}" title="${from}"/>
+                <img src="${img_url}" title="${from}" onerror="this.src='res/default.png'"/>
             </span>
             <div class="speech left">
                 <span class="nickname">${from}</span><br/>
@@ -328,11 +327,11 @@ function append_history_video_message(timestamp, from, video_type, video_data, u
         message_html =
         `<div class="rightd" id="msg_${timestamp}">
             <span class="rightd_h">
-                <img src="${img_url}" title="${from}"/>
+                <img src="${img_url}" title="${from}" onerror="this.src='res/default.png'"/>
             </span>
             <div class="speech right">
                 <span class="nickname">${from}</span><br/>
-                <video src="data:${video_type};base64, ${video_data}" style="max-height:400px;max-width:400px;" autoplay="1" controls="controls" loop="loop"/>
+                <video src="data:${video_type};base64, ${video_data}" style="max-height:350px;max-width:350px;" autoplay="1" controls="controls" loop="loop"/>
                 <br/><span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
@@ -342,11 +341,11 @@ function append_history_video_message(timestamp, from, video_type, video_data, u
         message_html =
         `<div class="leftd" id="msg_${timestamp}">
             <span class="leftd_h">
-                <img src="${img_url}" title="${from}"/>
+                <img src="${img_url}" title="${from}" onerror="this.src='res/default.png'"/>
             </span>
             <div class="speech left">
                 <span class="nickname">${from}</span><br/>
-                <video src="data:${video_type};base64, ${video_data}" style="max-height:400px;max-width:400px;" autoplay="1" controls="controls" loop="loop"/>
+                <video src="data:${video_type};base64, ${video_data}" style="max-height:350px;max-width:350px;" autoplay="1" controls="controls" loop="loop"/>
                 <br/><span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
