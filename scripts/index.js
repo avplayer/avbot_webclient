@@ -6,6 +6,7 @@ var telegram_ws;
 var show_name = "";
 var avbot_ws_address = "wss://vps3.hyq.me:6002";
 var avbot_face_address = "https://vps3.hyq.me:6002/avbot/face/";
+var avbot_media_baseurl = "https://vps3.hyq.me:6002";
 var msg_ids = new Array();
 
 $(document).ready(function () {
@@ -56,17 +57,16 @@ $(document).ready(function () {
         try{
             var obj = JSON.parse(message);
             if(obj["cmd"] == 1) {
-                append_history_text_message(obj["data"]["timestamp"], obj["data"]["from"], obj["data"]["msg"],  obj["data"]["user"]);
+                append_history_text_message(obj["data"]["id"], obj["data"]["timestamp"], obj["data"]["from"],
+                    obj["data"]["msg"],  obj["data"]["user"]);
             }
             else if(obj["cmd"] == 2) {
-                append_history_image_message(obj["data"]["timestamp"], obj["data"]["from"],
-                    obj["data"]["img_type"], obj["data"]["img_data"],
-                    obj["data"]["caption"], obj["data"]["user"]);
+                append_history_image_message(obj["data"]["id"], obj["data"]["timestamp"], obj["data"]["from"],
+                    obj["data"]["file_path"], obj["data"]["caption"], obj["data"]["user"]);
             }
             else if(obj["cmd"] == 3) {
-                append_history_video_message(obj["data"]["timestamp"], obj["data"]["from"],
-                obj["data"]["video_type"], obj["data"]["video_data"],
-                obj["data"]["user"]);
+                append_history_video_message(obj["data"]["id"], obj["data"]["timestamp"], obj["data"]["from"],
+                obj["data"]["file_path"], obj["data"]["user"]);
             }
             console.log("从服务器接收到数据：" + message);
         }
@@ -218,7 +218,7 @@ function insert_html_msg(msgid, message_html)
     $('#history_message').animate({scrollTop: $('#history_message')[0].scrollHeight}, 5);
 }
 
-function append_history_text_message(timestamp, from, message, user)
+function append_history_text_message(id, timestamp, from, message, user)
 {
     var message_html = "";
     message = message == "" ? "&nbsp;" : message;
@@ -235,7 +235,7 @@ function append_history_text_message(timestamp, from, message, user)
     if(from == show_name)
     {
         message_html =
-        `<div class="rightd" id="msg_${timestamp}">
+        `<div class="rightd" id="msg_${id}">
             <span class="rightd_h">
                 <img src="${img_url}" title="${from}" onerror="this.src='res/default.png'"/>
             </span>
@@ -248,7 +248,7 @@ function append_history_text_message(timestamp, from, message, user)
     else
     {
         message_html =
-        `<div class="leftd" id="msg_${timestamp}">
+        `<div class="leftd" id="msg_${id}">
             <span class="leftd_h">
                 <img src="${img_url}" title="${from}" onerror="this.src='res/default.png'"/>
             </span>
@@ -259,10 +259,10 @@ function append_history_text_message(timestamp, from, message, user)
             </div>
         </div>`;
     }
-    insert_html_msg(parseInt(timestamp), message_html);
+    insert_html_msg(id, message_html);
 }
 
-function append_history_image_message(timestamp, from, img_type, img_data, caption, user)
+function append_history_image_message(id, timestamp, from, img_path, caption, user)
 {
     var message_html = "";
     message = message == "" ? "&nbsp;" : message;
@@ -276,16 +276,17 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
         img_url = "res/avbot.jpg";
     }
     caption = html_encode(caption);
+    var media_url = avbot_media_baseurl + img_path;
     if(from == show_name)
     {
         message_html =
-        `<div class="rightd" id="msg_${timestamp}">
+        `<div class="rightd" id="msg_${id}">
             <span class="rightd_h">
                 <img src="${img_url}" title="${from}" onerror="this.src='res/default.png'"/>
             </span>
             <div class="speech right">
                 <span class="nickname">${from}</span><br/>
-                <img src="data:${img_type};base64, ${img_data}"/>
+                <img src="${media_url}"/>
                 <br/><br/>${caption}
                 <br/><span class="timestamp">${hhmm}</span>
             </div>
@@ -294,22 +295,22 @@ function append_history_image_message(timestamp, from, img_type, img_data, capti
     else
     {
         message_html =
-        `<div class="leftd" id="msg_${timestamp}">
+        `<div class="leftd" id="msg_${id}">
             <span class="leftd_h">
                 <img src="${img_url}" title="${from}" onerror="this.src='res/default.png'"/>
             </span>
             <div class="speech left">
                 <span class="nickname">${from}</span><br/>
-                <img src="data:${img_type};base64, ${img_data}"/>
+                <img src="${media_url}"/>
                 <br/><br/>${caption}
                 <br/><span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
     }
-    insert_html_msg(parseInt(timestamp), message_html);
+    insert_html_msg(id, message_html);
 }
 
-function append_history_video_message(timestamp, from, video_type, video_data, user)
+function append_history_video_message(id, timestamp, from, video_path, user)
 {
     var message_html = "";
     message = message == "" ? "&nbsp;" : message;
@@ -322,16 +323,17 @@ function append_history_video_message(timestamp, from, video_type, video_data, u
     else {
         img_url = "res/avbot.jpg";
     }
+    var media_url = avbot_media_baseurl + video_path;
     if(from == show_name)
     {
         message_html =
-        `<div class="rightd" id="msg_${timestamp}">
+        `<div class="rightd" id="msg_${id}">
             <span class="rightd_h">
                 <img src="${img_url}" title="${from}" onerror="this.src='res/default.png'"/>
             </span>
             <div class="speech right">
                 <span class="nickname">${from}</span><br/>
-                <video src="data:${video_type};base64, ${video_data}" autoplay="1" controls="controls" loop="loop"/>
+                <video src="${media_url}" autoplay="1" controls="controls" loop="loop"/>
                 <br/><span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
@@ -339,18 +341,18 @@ function append_history_video_message(timestamp, from, video_type, video_data, u
     else
     {
         message_html =
-        `<div class="leftd" id="msg_${timestamp}">
+        `<div class="leftd" id="msg_${id}">
             <span class="leftd_h">
                 <img src="${img_url}" title="${from}" onerror="this.src='res/default.png'"/>
             </span>
             <div class="speech left">
                 <span class="nickname">${from}</span><br/>
-                <video src="data:${video_type};base64, ${video_data}" autoplay="1" controls="controls" loop="loop"/>
+                <video src="${media_url}" autoplay="1" controls="controls" loop="loop"/>
                 <br/><span class="timestamp">${hhmm}</span>
             </div>
         </div>`;
     }
-    insert_html_msg(parseInt(timestamp), message_html);
+    insert_html_msg(id, message_html);
 }
 
 function send_text(ws, message, datetime)
